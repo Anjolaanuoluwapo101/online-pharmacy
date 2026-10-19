@@ -38,7 +38,7 @@ const JourneyScreen = () => {
   return (
     <PhoneFrame tone="home">
       <div className="h-screen">
-        <ScreenHeader title="hera." onBack={smartBack} />
+        <ScreenHeader title="prescilly." onBack={smartBack} />
         <div className="h-screen-body">
           <Art scene="ada" compact />
 

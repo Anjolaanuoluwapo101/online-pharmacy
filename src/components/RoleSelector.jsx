@@ -19,7 +19,7 @@ const RoleSelector = () => (
   <PhoneFrame tone="home">
     <div className="h-screen">
       <div className="h-screen-body">
-        <div className="h-brand-row"><span>hera.</span><small>Care, delivered</small></div>
+        <div className="h-brand-row"><span>prescilly.</span><small>Care, delivered</small></div>
         <Art scene="welcome" />
         <h1 className="h-display">Your prescription,<br />handled with care.</h1>
         <p className="h-lede">Scan it, compare nearby pharmacies, pay, and get gentle dose reminders.</p>

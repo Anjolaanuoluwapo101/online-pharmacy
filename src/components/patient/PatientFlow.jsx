@@ -12,7 +12,7 @@ import { getBin } from "../../lib/gistClient";
 import { cartTotal } from "../../lib/storage";
 import { useSmartBack } from "../../lib/useBack";
 
-console.log("[hera] PatientFlow v3 loaded");
+console.log("[prescilly] PatientFlow v3 loaded");
 
 const steps = [
   { key: "upload", label: "Upload Prescription" },

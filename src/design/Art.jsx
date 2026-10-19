@@ -42,7 +42,7 @@ export default function Art({ scene, compact }) {
   const c = CAP[scene];
   return (
     <figure className={`h-art${compact ? " is-compact" : ""}`}>
-      <svg viewBox="0 0 320 170" role="img" aria-label={c ? c[0] : 'Hera'}>
+      <svg viewBox="0 0 320 170" role="img" aria-label={c ? c[0] : 'Prescilly'}>
         <defs><radialGradient id={`g-${scene}`} cx="50%" cy="50%" r="60%"><stop offset="0" stopColor="#c3ebe5" /><stop offset="1" stopColor="#c3ebe5" stopOpacity="0" /></radialGradient></defs>
         <ellipse cx="160" cy="88" rx="150" ry="74" fill={`url(#g-${scene})`} />
         {S[scene]()}

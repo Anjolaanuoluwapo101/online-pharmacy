@@ -179,7 +179,7 @@ const TrackOrder = () => {
             <div className="h-rider">
               <i>{rider.slice(0, 1)}</i>
               <div>
-                <p>{rider} · Hera Rider</p>
+                <p>{rider} · Prescilly Rider</p>
                 <small>{arrived ? "Delivered" : <>Arriving in <b>{tick?.etaMinutes ?? 0} min</b></>}</small>
               </div>
             </div>

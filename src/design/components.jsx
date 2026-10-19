@@ -155,7 +155,7 @@ export const MapCard = ({ distance, rider, eta, children }) => (
   <div className="h-map">{children ?? <><i className="h-route" /><i className="h-rider-pin"><Icon n="nav" size={13} /></i></>}
     <span className="h-live">{distance} · Live</span>
     <div style={{ position: 'absolute', top: 12, right: 12 }}><IconButton icon="nav" variant="glass" size={14} style={{ width: 34, height: 34 }} /></div>
-    <div className="h-rider"><i>{rider[0]}</i><div><p>{rider} · Hera Rider</p><small>Arriving in <b>{eta}</b> min</small></div><IconButton icon="phone" variant="dark" size={15} style={{ width: 40, height: 40 }} /></div></div>
+    <div className="h-rider"><i>{rider[0]}</i><div><p>{rider} · Prescilly Rider</p><small>Arriving in <b>{eta}</b> min</small></div><IconButton icon="phone" variant="dark" size={15} style={{ width: 40, height: 40 }} /></div></div>
 );
 /** steps: [{title, sub, state:'done'|'current'|'pending'}] */
 export const Timeline = ({ steps }) => (
