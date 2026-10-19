@@ -25,4 +25,4 @@ dist-ssr
 
 *.zip
 */config.js
-config.js
+# config.js

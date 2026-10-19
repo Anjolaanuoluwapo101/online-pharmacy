@@ -79,6 +79,21 @@ export function todaysDoses(reminders, now = new Date()) {
   return list.sort((a, b) => a.at - b.at);
 }
 
+/**
+ * Group today's doses by time slot, so a timestamp is shown once per
+ * slot instead of once per medicine.
+ */
+export function groupByTime(doses) {
+  const map = new Map();
+  (doses || []).forEach((d) => {
+    if (!map.has(d.time)) map.set(d.time, []);
+    map.get(d.time).push(d);
+  });
+  return [...map.entries()]
+    .map(([time, items]) => ({ time, doses: items, at: items[0]?.at }))
+    .sort((a, b) => a.at - b.at);
+}
+
 /** The next dose that has not been taken yet. */
 export function nextDose(reminders, now = new Date()) {
   const upcoming = [];

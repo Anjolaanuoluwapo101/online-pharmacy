@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { PhoneFrame, ScreenHeader, Chip, Button, Icon } from "../../design/components";
 import {
   getReminders, updateReminderStatus, removeReminder,
-  markDoseTaken, undoDose, snoozeReminder,
+  markDoseTaken, undoDose, snoozeReminder, pruneReminders,
 } from "../../lib/storage";
 import {
-  dayKey, scheduleFor, todaysDoses, nextDose, minutesUntil, humanCountdown, adherence, courseDay,
+  dayKey, scheduleFor, todaysDoses, nextDose, minutesUntil, humanCountdown, adherence, courseDay, groupByTime,
 } from "../../lib/reminders";
 import AppTabs from "../../design/AppTabs";
 
@@ -19,12 +19,16 @@ const ReminderAlerts = ({ onFinish, onBack }) => {
   const refresh = useCallback(() => setReminders(getReminders()), []);
 
   useEffect(() => {
+    // one-time cleanup of duplicate records left by earlier test orders
+    const removed = pruneReminders();
+    if (removed) console.log(`[reminders] pruned ${removed} duplicate record(s)`);
     refresh();
     const t = setInterval(() => setNow(new Date()), 30000);
     return () => clearInterval(t);
   }, [refresh]);
 
   const doses = todaysDoses(reminders, now);
+  const slots = groupByTime(doses);
   const next = nextDose(reminders, now);
   const stats = adherence(reminders, 7, now);
   const key = dayKey(now);
@@ -81,30 +85,36 @@ const ReminderAlerts = ({ onFinish, onBack }) => {
               </div>
 
               <div className="h-list">
-                {doses.length === 0 ? (
+                {slots.length === 0 ? (
                   <small className="h-meta" style={{ display: "block", padding: "10px 0" }}>
                     No doses scheduled for today.
                   </small>
                 ) : (
-                  doses.map((d) => {
-                    const overdue = !d.taken && d.at < now;
-                    return (
-                      <div key={`${d.reminder.id}-${d.time}`} className="h-dose">
-                        <span className="h-dosetime">{d.time}</span>
-                        <div className="h-lmain">
-                          <b>{d.reminder.medication_name}</b>
-                          <small>{d.reminder.dosage}{d.snoozed ? " · snoozed" : ""}</small>
-                        </div>
-                        <button
-                          className={`h-dosecheck ${d.taken ? "is-on" : overdue ? "is-due" : ""}`}
-                          onClick={() => handleTake(d)}
-                          aria-label={d.taken ? "Mark as not taken" : "Mark as taken"}
-                        >
-                          {d.taken ? <Icon n="check" size={14} /> : ""}
-                        </button>
+                  slots.map((slot) => (
+                    <div key={slot.time} className="h-timeslot">
+                      <span className="h-slotlabel">{slot.time}</span>
+                      <div className="h-slotdoses">
+                        {slot.doses.map((d) => {
+                          const overdue = !d.taken && d.at < now;
+                          return (
+                            <div key={`${d.reminder.id}-${d.time}`} className="h-dose">
+                              <div className="h-lmain">
+                                <b>{d.reminder.medication_name}</b>
+                                <small>{d.reminder.dosage}{d.snoozed ? " · snoozed" : ""}</small>
+                              </div>
+                              <button
+                                className={`h-dosecheck ${d.taken ? "is-on" : overdue ? "is-due" : ""}`}
+                                onClick={() => handleTake(d)}
+                                aria-label={d.taken ? "Mark as not taken" : "Mark as taken"}
+                              >
+                                {d.taken ? <Icon n="check" size={14} /> : ""}
+                              </button>
+                            </div>
+                          );
+                        })}
                       </div>
-                    );
-                  })
+                    </div>
+                  ))
                 )}
               </div>
 
@@ -136,15 +146,9 @@ const ReminderAlerts = ({ onFinish, onBack }) => {
                     </header>
                     <small>
                       {r.dosage} · {r.frequency}
+                      {times.length ? ` · ${times.length}× daily` : ""}
                       {course?.total ? ` · Day ${course.day} of ${course.total}` : ""}
                     </small>
-                    {times.length > 0 && (
-                      <div className="h-dosepills">
-                        {times.map((t) => (
-                          <span key={t} className="h-dosepill">{t}</span>
-                        ))}
-                      </div>
-                    )}
                     <div className="h-ractions">
                       <Button variant="ink" size="xs" fit onClick={() => handleSnooze(r)}>Snooze 30m</Button>
                       <button className="h-linkbtn is-danger" style={{ marginLeft: "auto" }} onClick={() => handleRemove(r)}>

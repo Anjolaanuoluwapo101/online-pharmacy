@@ -317,6 +317,11 @@ textarea.h-input{height:auto;min-height:88px;padding:16px 18px;border-radius:var
 .h-dose{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid rgba(0,0,0,.05)}
 .h-dose:first-child{border-top:0}
 .h-dosetime{font:700 13px Inter;color:var(--md-on-variant);width:44px;flex:none;letter-spacing:-.01em}
+.h-timeslot{display:flex;gap:12px;padding:11px 0;border-top:1px solid rgba(0,0,0,.05)}
+.h-timeslot:first-child{border-top:0}
+.h-slotlabel{font:700 12px Inter;color:var(--md-on-surface);width:42px;flex:none;padding-top:1px;letter-spacing:-.01em}
+.h-slotdoses{flex:1;display:flex;flex-direction:column;gap:7px;min-width:0}
+.h-slotdoses .h-dose{padding:0;border-top:0}
 .h-dosecheck{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--faint);background:#fff;
   display:grid;place-items:center;flex:none;cursor:pointer;transition:background .2s var(--ease),border-color .2s var(--ease)}
 .h-dosecheck.is-on{background:var(--teal);border-color:var(--teal);color:#fff}
