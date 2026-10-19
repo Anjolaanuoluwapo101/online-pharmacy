@@ -129,13 +129,62 @@ export function setItemQty(pharmacyId, medicineId, qty) {
 }
 
 // ---- REMINDERS ----
+const reminderKey = (r) =>
+  `rx-${String(r?.medication_name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
+
+function mergeTaken(a, b) {
+  if (!a && !b) return undefined;
+  const out = { ...(a || {}) };
+  Object.entries(b || {}).forEach(([day, times]) => {
+    out[day] = [...new Set([...(out[day] || []), ...(times || [])])];
+  });
+  return out;
+}
+
+/** One record per medicine — the course window is merged, dose logs are unioned. */
+function dedupeReminders(list) {
+  const byKey = new Map();
+  (list || []).forEach((r) => {
+    const key = reminderKey(r);
+    const prev = byKey.get(key);
+    if (!prev) {
+      byKey.set(key, { ...r, id: key });
+      return;
+    }
+    const merged = { ...prev, ...r, taken: mergeTaken(prev.taken, r.taken) };
+    if (prev.end_date && r.end_date) {
+      merged.end_date = prev.end_date > r.end_date ? prev.end_date : r.end_date;
+    }
+    byKey.set(key, merged);
+  });
+  return [...byKey.values()];
+}
+
 export function getReminders() {
   try {
     const data = localStorage.getItem(STORAGE_KEYS.reminders);
-    return data ? JSON.parse(data) : [];
+    const list = data ? JSON.parse(data) : [];
+    return Array.isArray(list) ? dedupeReminders(list) : [];
   } catch (e) {
     console.warn("reminders read error", e);
     return [];
+  }
+}
+
+/** Persist the dedupe so stale duplicate records leave storage for good. */
+export function pruneReminders() {
+  const raw = localStorage.getItem(STORAGE_KEYS.reminders);
+  if (!raw) return 0;
+  try {
+    const list = JSON.parse(raw) || [];
+    const clean = dedupeReminders(list);
+    if (clean.length !== list.length) {
+      setReminders(clean);
+      return list.length - clean.length;
+    }
+    return 0;
+  } catch (e) {
+    return 0;
   }
 }
 
@@ -147,11 +196,26 @@ export function setReminders(reminders) {
   }
 }
 
+/**
+ * Add (or refresh) a reminder for a medicine.
+ * Re-ordering the same medicine updates the existing course instead of
+ * creating a duplicate, and keeps the dose history.
+ */
 export function addReminder(reminder) {
   const reminders = getReminders();
-  // Avoid duplicates by id
-  if (!reminders.find((r) => r.id === reminder.id)) {
-    reminders.push(reminder);
+  const key = reminderKey(reminder);
+  const existing = reminders.find((r) => reminderKey(r) === key);
+  if (existing) {
+    existing.start_date = reminder.start_date ?? existing.start_date;
+    existing.end_date = reminder.end_date ?? existing.end_date;
+    existing.dosage = reminder.dosage ?? existing.dosage;
+    existing.frequency = reminder.frequency ?? existing.frequency;
+    existing.times_per_day = reminder.times_per_day ?? existing.times_per_day;
+    existing.status = reminder.status || "active";
+    delete existing.snoozedUntil;
+    existing.taken = mergeTaken(existing.taken, reminder.taken);
+  } else {
+    reminders.push({ ...reminder, id: key });
   }
   setReminders(reminders);
 }
