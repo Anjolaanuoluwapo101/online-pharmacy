@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300..700&display=swap');
+/* Material 3 (teal "You" palette) layer. Loaded last. */
+:root{--md-primary:#00796b;--md-primary-container:#c3ebe5;--md-on-primary-container:#00201d;--md-surface:#f4faf8;--md-sc:#e8f1ef;--md-sc-low:#eef5f3;--md-on-surface:#171d1c;--md-on-variant:#3f4948;--md-outline:#6f7977;}
+.h-phone,.h-phone *{font-family:"Roboto Flex",Roboto,system-ui,sans-serif!important}
+body{background:var(--bg)}
+/* top app bar: back + left-aligned title */
+.h-head{height:64px;margin-top:0;padding:0 8px 0 4px;justify-content:flex-start;gap:4px}
+.h-head .h-ibtn{width:48px;height:48px;background:transparent;box-shadow:none;color:var(--md-on-surface)}
+.h-head .h-ibtn:hover{background:rgba(23,29,28,.08)}
+.h-head-title{position:static;transform:none;margin-left:8px;font:500 22px/28px Roboto;color:var(--md-on-surface)}
+.h-head-title:first-child{margin-left:16px}
+.h-head-meta{margin-left:auto;margin-right:12px;padding:6px 12px;border-radius:8px;background:var(--md-sc);color:var(--md-on-variant);font:500 12px Roboto}
+/* stepper */
+.h-stepper{padding:0 24px 4px}.h-steps{display:flex;gap:4px}
+.h-steps i{flex:1;height:4px;border-radius:2px;background:#cfdad8;transition:background .5s}.h-steps i.on{background:var(--md-primary)}
+.h-steps i.cur{background:linear-gradient(90deg,var(--md-primary),#7fd4c8)}
+.h-stepper p{margin:8px 0 0;font:500 12px Roboto;color:var(--md-on-variant)}
+/* buttons — depth, sheen and lift come from wow.css (loaded last) */
+.h-btn{height:56px;border-radius:28px;font-weight:500;letter-spacing:.1px}
+.h-btn.is-outline{border:1.5px solid var(--md-outline)}
+.h-screen-cta{padding:12px 20px 24px;background:linear-gradient(transparent,var(--bg) 35%)}
+/* surfaces — glass + lift come from wow.css; radius stays generous */
+.h-dopt{border:2px solid transparent}
+.h-dopt.is-on{background:var(--md-primary-container);border-color:var(--md-primary)}
+.h-chip{height:28px;font-weight:500}
+.h-phrow{flex-wrap:wrap}
+/* line art */
+.h-art{margin:0 0 10px;padding:0}.h-art svg{width:100%;height:auto;max-height:170px;display:block;animation:h-float 6s ease-in-out infinite alternate}
+.h-art path{fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:h-draw 1.5s calc(var(--i)*.07s + .1s) cubic-bezier(.5,0,.2,1) forwards}
+.h-art .a1{stroke:var(--md-primary)}.h-art .a2{stroke:#e0809d}.h-art .a3{stroke:#5bb7c4}
+.h-art figcaption{padding:2px 4px 0}.h-art figcaption b{display:block;font:500 22px/1.2 Roboto;color:var(--md-on-surface)}
+.h-art figcaption span{display:block;margin-top:4px;font:400 13px/1.4 Roboto;color:var(--md-on-variant)}
+@keyframes h-draw{to{stroke-dashoffset:0}}@keyframes h-float{to{transform:translateY(-5px)}}
+/* journey screen */
+.h-brand-row{display:flex;align-items:baseline;gap:8px;padding:14px 0 0}.h-brand-row span{font:700 22px Roboto;color:var(--md-primary);letter-spacing:-.02em}.h-brand-row small{font:400 12px Roboto;color:var(--md-on-variant)}
+.h-display{margin:4px 0 8px;font:400 30px/1.15 Roboto;color:var(--md-on-surface);-webkit-text-fill-color:currentColor;background:none;animation:none}
+.h-lede{margin:0 0 6px;font:400 14px/1.5 Roboto;color:var(--md-on-variant)}
+.h-label2{margin:16px 0 8px;font:500 12px Roboto;letter-spacing:.5px;color:var(--md-primary)}
+.h-role{display:flex;align-items:center;gap:14px;width:100%;padding:14px 16px;border:0;border-radius:24px;background:var(--md-sc);text-align:left;cursor:pointer;margin-bottom:10px;color:var(--md-on-surface);transition:background .2s,transform .2s}
+.h-role:hover{background:#dbe7e4}.h-role:active{transform:scale(.98)}
+.h-role i{width:48px;height:48px;border-radius:16px;background:var(--md-primary-container);color:var(--md-on-primary-container);display:grid;place-items:center;flex:none}
+.h-role span{flex:1}.h-role b{display:block;font:500 16px Roboto}.h-role small{font:400 13px/1.35 Roboto;color:var(--md-on-variant)}
+.h-role.is-primary{background:var(--md-primary);color:#fff;padding:20px 16px}.h-role.is-primary small{color:rgba(255,255,255,.82)}.h-role.is-primary i{background:rgba(255,255,255,.2);color:#fff}
+.h-snack{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:99;background:#2b3231;color:#eef5f3;padding:14px 20px;border-radius:8px;font:400 14px Roboto;box-shadow:0 6px 18px rgba(0,0,0,.3);animation:h-rise .3s both;display:flex;align-items:center;gap:14px;max-width:88vw}
+.h-snackbtn{border:0;background:rgba(255,255,255,.16);color:#c3ebe5;font:600 12px Roboto;padding:7px 12px;border-radius:6px;cursor:pointer;white-space:nowrap}
+.h-snackbtn:hover{background:rgba(255,255,255,.26)}

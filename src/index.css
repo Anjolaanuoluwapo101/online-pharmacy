@@ -1,0 +1,28 @@
+@import url('leaflet/dist/leaflet.css');
+@import url('./design/hera.css');
+@import url('./design/material.css');
+@import url('./design/wow.css');
+
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: "Roboto Flex", Roboto, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+button {
+  font-family: inherit;
+}
+
+input, select, textarea {
+  font-family: inherit;
+}
+
+a {
+  text-decoration: none;
+}
