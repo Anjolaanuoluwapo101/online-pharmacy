@@ -25,6 +25,9 @@ dist-ssr
 
 *.zip
 
+# Local PRD (working document)
+PRD.txt
+
 # secrets — never commit
 .env
 .env.local
